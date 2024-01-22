@@ -1,0 +1,37 @@
+.button__sm {
+  @apply text-sm;
+  @apply w-[135px];
+}
+
+.button__base {
+  @apply text-base;
+  @apply w-40;
+}
+
+.button__lg {
+  @apply text-lg;
+}
+
+.button__xl {
+  @apply text-xl;
+  @apply w-44;
+}
+
+.button__full {
+  @apply text-base;
+  @apply w-full;
+  @apply h-12;
+}
+
+.button__primary[type='button'] {   
+  @apply bg-primary;
+  @apply text-white;
+}
+
+.button__secondary {
+  
+}
+
+.button__disable {
+
+}
