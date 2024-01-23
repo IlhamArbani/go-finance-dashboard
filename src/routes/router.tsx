@@ -1,8 +1,18 @@
-import { AuthLayout } from "@/layout";
-import { LoginPage, RegisterPage } from "@/pages";
+import { AuthLayout, HomeLayout } from "@/layout";
+import { HomePage, LoginPage, RegisterPage } from "@/pages";
 import { createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([
+  {
+    path:'/',
+    element: <HomeLayout/>,
+    children: [
+      {
+        path: '/',
+        element: <HomePage/>
+      }
+    ],
+  },
   {
     path: '/',
     element: <AuthLayout/>,
