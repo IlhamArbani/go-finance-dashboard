@@ -8,21 +8,15 @@ import { Input } from "..";
 type Props = {
   columns: Column[],
   data: object[],
-  // pages: number,
-  // activePage: number,
-  // onNext: (page: number) => void,
-  // onPrev: (page: number) => void,
-  // onSelectPage: (page: number) => void,
-  // onSelectLimit: (page: number) => void,
 }
 
 const Table = (props: Props) => {
   const columnHelper = createColumnHelper<any>();
 
-  const columns = props.columns.map(column => {
+  const columns = props.columns.map(column => {    
     return columnHelper.accessor(column.accessor, {
       header: () => <span>{column.header}</span>,
-      cell: info => info.getValue(),
+      cell: column.cell === '' ? info => info.getValue() : column.cell,
     })
   })
 
@@ -48,7 +42,7 @@ const Table = (props: Props) => {
       <table className="w-full">
         <thead>
         {table.getHeaderGroups().map(headerGroup => (
-            <tr key={headerGroup.id} className={cx('bg-gray-200')}>
+            <tr key={headerGroup.id} className={cx('bg-gray-200 border-t-2 border-gray-300')}>
               {headerGroup.headers.map(header => (
                 <th key={header.id} className="text-left p-3 text-sm font-medium">
                   {header.isPlaceholder
@@ -64,8 +58,8 @@ const Table = (props: Props) => {
         </thead>
         <tbody>
         {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className={cx('bg-gray-200 border-y-2')}>
-              {row.getVisibleCells().map(cell => (
+            <tr key={row.id} className={cx('bg-gray-100 border-y-2 border-gray-300')}>
+              {row.getAllCells().map(cell => (
                 <td className="p-3 text-left" key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>

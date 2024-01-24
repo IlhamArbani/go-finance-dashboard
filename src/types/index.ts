@@ -15,5 +15,5 @@ export type TransactionsPayload = {
   name: string,
   price: number,
   date: string,
-  status: 'PENDING' | 'SUCCESS' | 'FAILED'
+  status: string,
 }

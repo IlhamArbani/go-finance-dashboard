@@ -19,3 +19,19 @@ export const postTransactionService = async (payload: TransactionsPayload) => {
     return error.response
   }
 }
+
+export const putTransactionService = async (payload: TransactionsPayload, id: string) => {
+  try {
+    return Axios.put(`${path}/${id}`, payload)
+  } catch (error: any) {
+    return error.response
+  }
+}
+
+export const deleteTransaction = async (id: string) => {
+  try {
+    return Axios.delete(`${path}/${id}`)
+  } catch (error: any) {
+    return error.response
+  }
+}
