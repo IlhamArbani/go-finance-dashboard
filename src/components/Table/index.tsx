@@ -40,6 +40,7 @@ const Table = (props: Props) => {
         <div className={cx('w-1/4')}>
           <Input
             placeholder="Search Transaction"
+            name="search"
           />
         </div>
         <img src={ICSearch}/>

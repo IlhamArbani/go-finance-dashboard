@@ -9,13 +9,6 @@ const initialState = {
     isSuccess: false,
     message: '',
   },
-  data: {
-    username: '',
-    password: '',
-  },
-  modal: {
-    isModalConfirmShow: false,
-  }
 }
 
 export const resolveRegisterService = createAsyncThunk(
@@ -23,7 +16,7 @@ export const resolveRegisterService = createAsyncThunk(
   async (payload: RegisterPayload, {rejectWithValue}) => {
     const response = await registerService(payload);
 
-    if(response.status === 200 || response.status === 201) {
+    if(response.status === 201) {
       return response.data;
     }
 

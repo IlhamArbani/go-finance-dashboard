@@ -10,3 +10,10 @@ export type LoginPayload = {
 };
 
 export type RegisterPayload = LoginPayload & {username: string};
+
+export type TransactionsPayload = {
+  name: string,
+  price: number,
+  date: string,
+  status: 'PENDING' | 'SUCCESS' | 'FAILED'
+}

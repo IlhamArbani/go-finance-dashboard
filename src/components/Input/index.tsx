@@ -27,12 +27,20 @@ const Input = (props: Props) => {
       <div className={cx('w-full border-[1px] rounded-full py-2 px-4')}>
         <div className='flex gap-x-2'>
           {icon && <img src={icon}/>}
-          <input
-            type={type}
-            placeholder={placeholder}
-            className={cx('w-full outline-none')}
-            {...register(name, {required})}
-          />
+          {
+            register ?
+            <input
+              type={type}
+              placeholder={placeholder}
+              className={cx('w-full outline-none')}
+              {...register(name, {required})}
+            />:
+            <input
+              type={type}
+              placeholder={placeholder}
+              className={cx('w-full outline-none')}
+            />
+          }
         </div>
       </div>
       {isError && <span className='text-red-400'>This field is required</span>}
@@ -45,6 +53,7 @@ Input.defaultProps = {
   icon: null,
   required: false,
   isError: null,
+  register: null,
 }
 
 export default Input

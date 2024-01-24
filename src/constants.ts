@@ -8,5 +8,6 @@ export const COOKIES = {
 export const PATHS = {
   login: 'login',
   register: 'users',
+  transactions: 'transactions',
 }
 

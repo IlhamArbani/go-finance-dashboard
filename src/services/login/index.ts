@@ -6,7 +6,7 @@ type Payload = {
   password: string;
 }
 
-export const login = async (payload: Payload) => {
+export const loginService = async (payload: Payload) => {
   const path = PATHS.login;
 
   try {
