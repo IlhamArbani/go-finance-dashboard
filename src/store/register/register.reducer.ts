@@ -23,7 +23,7 @@ export const resolveRegisterService = createAsyncThunk(
   async (payload: RegisterPayload, {rejectWithValue}) => {
     const response = await registerService(payload);
 
-    if(response.status === 200) {
+    if(response.status === 200 || response.status === 201) {
       return response.data;
     }
 

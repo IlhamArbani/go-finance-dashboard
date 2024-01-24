@@ -7,6 +7,7 @@ import ICSearch from './ic_search.svg';
 import ICEdit from './ic_edit.svg';
 import ICDelete from './ic_delete.svg';
 
+
 export {
   ICEmail,
   ICLock,

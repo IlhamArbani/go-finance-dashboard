@@ -7,6 +7,6 @@ export const COOKIES = {
 
 export const PATHS = {
   login: 'login',
-  register: 'register',
+  register: 'users',
 }
 
