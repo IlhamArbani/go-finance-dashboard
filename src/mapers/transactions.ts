@@ -1,3 +1,5 @@
+import { generateDate } from "@/utils/dateUtils";
+
 export const mapTransactions = (data: any[]) => {
   const result = data.map((item) => (
     {
@@ -10,4 +12,13 @@ export const mapTransactions = (data: any[]) => {
   ))
 
   return result;
+}
+
+export const mapDetailTransaction = (data: any) => {
+  return {
+    name: data.name ?? '',
+    price: data.year ?? 0,
+    date: generateDate(),
+    status: data.color ?? ''
+  }
 }

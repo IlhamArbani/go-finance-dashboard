@@ -12,6 +12,14 @@ export const getTransactionsService = async () => {
   }
 }
 
+export const getTransactionService = async (id: string) => {
+  try {
+    return Axios.get(`${path}/${id}`)
+  } catch (error: any) {
+    return error.response
+  }
+}
+
 export const postTransactionService = async (payload: TransactionsPayload) => {
   try {
     return Axios.post(path, payload)
