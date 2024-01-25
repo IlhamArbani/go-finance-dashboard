@@ -1,4 +1,4 @@
-import { Button, Table } from '@/components'
+import { Button, IndeterminateCheckbox, Table } from '@/components'
 import React, { useEffect } from 'react'
 import cx from 'classnames'
 import useTransactions from '@/hooks/useTransactions';
@@ -16,15 +16,34 @@ const HomePage = () => {
     },
     data: {
       transactions,
-      status
+      status,
+      selectedId
     }
   } = useTransactions();
+  
 
   const columns = [
     {
-      accessor: 'id',
-      header: '',
-      cell: () => <></>,
+      accessor: 'select',
+      header: ({table}: any) => (
+        <IndeterminateCheckbox
+          {...{
+            checked: table.getIsAllRowsSelected(),
+            indeterminate: table.getIsSomeRowsSelected(),
+            onChange: table.getToggleAllRowsSelectedHandler(),
+          }}
+        />
+      ),
+      cell: ({row}: any) => (
+        <IndeterminateCheckbox
+          {...{
+            checked: row.getIsSelected(),
+            disabled: !row.getCanSelect(),
+            indeterminate: row.getIsSomeSelected(),
+            onChange: row.getToggleSelectedHandler(),
+          }}
+        />
+      ),
     },
     {
       accessor: 'item',
@@ -53,14 +72,14 @@ const HomePage = () => {
         return (
           <div className={cx('flex gap-x-2')}>
             <div
-              className={cx('rounded-full p-2 bg-gray-200 cursor-pointer')}
+              className={cx('md:rounded-full md:bg-gray-200 cursor-pointer flex items-center justify-center w-12 h-12 md:w-fit md:h-fit md:p-2')}
               onClick={() => navigate(`/transaction/${item.row.original.id}`)}
             >
               <img src={ICEdit}/>
             </div>
             <img
               onClick={() => handelDeleteResolveTransactionService(item.row.original.id)}
-              className={cx('cursor-pointer')}
+              className={cx('cursor-pointer', {'animate-bounce': status.isLoading && status.service === 'delete' && item.row.original.id === selectedId})}
               src={ICDelete}
             />
           </div>

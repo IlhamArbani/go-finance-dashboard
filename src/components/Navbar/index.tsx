@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ICArrowDown, ICNullProfile } from '@/assets/icons'
 import useAuth from '@/hooks/useAuth'
 import Alert from '../Alert'
+import useUsers from '@/hooks/useUsers'
+import { getUser } from '@/utils/cookieUtils'
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -18,12 +20,23 @@ const Navbar = () => {
       status
     }
   } = useAuth();
+  const {
+    method: {
+      handelResolveGetUserService,
+    },
+    data: {
+      user,
+    }
+  } = useUsers();
   useEffect(() => {
     if(status.isSuccess){
       navigate('/login')
     }
     return handelResetStatus
   }, [status.isSuccess])
+  useEffect(() => {
+    handelResolveGetUserService(getUser())
+  }, [])
   return (
     <nav id='home' className="bg-primary border-gray-200 relative z-30">
       <Alert.Error
@@ -33,13 +46,23 @@ const Navbar = () => {
       />
       <div className="flex flex-wrap items-center justify-end p-4 w-screen md:px-20 md:py-0">
         <div className={cx('md:flex text-white gap-x-3 px-12 border-l-2 border-l-[#0000001F] py-4 hidden')}>
-          <img src={ICNullProfile} />
+          {
+            user.avatar ?
+            <img
+              className={cx('w-12 h-12 rounded-full')}
+              src={user.avatar} 
+            />:
+            <img
+              className={cx('w-12 h-12 rounded-full')}
+              src={ICNullProfile} 
+            />
+          }
           <div
             className={cx('cursor-pointer')}
             onClick={() => setHideModal(!isHideModal)}
           >
             <div className={cx('flex gap-x-3')}>
-              <h1>Ilham Naufal A</h1>
+              <h1>{user.name}</h1>
               <img src={ICArrowDown}/>
             </div>
             <p>Software Engineer</p>
@@ -47,11 +70,11 @@ const Navbar = () => {
           {
             !isHideModal &&
             <div className={cx('bg-white absolute p-3 right-28 w-44 rounded-md -bottom-16 border-[1px] hidden z-10 md:block')}>
-              <Link to={'/profile'} className={cx('text-black mb-4 cursor-pointer')}>
+              <Link to={'/profile'} onClick={() => setHideModal(true)} className={cx('text-black mb-4 cursor-pointer')}>
                 <p>Profile</p>
               </Link>
               <p
-                className={cx('text-black cursor-pointer')}
+                className={cx('text-black cursor-pointer', {'animate-pulse': status.isLoading})}
                 onClick={() => handelResolveLogoutService()}
               >
                 Logout
@@ -71,7 +94,7 @@ const Navbar = () => {
               <Link to={'/profile'} className="block py-2 px-3 text-white">Profile</Link>
             </li>
             <li>
-              <Link to={'/profile'} className="block py-2 px-3 text-white">Log Out</Link>
+              <p onClick={() => handelResolveLogoutService()} className={cx("block py-2 px-3 text-white", {'animate-pulse': status.isLoading})}>Log Out</p>
             </li>
           </ul>
         </div>

@@ -1,11 +1,11 @@
-import { resetDetailTransaction, resetStatus, resolveDeleteTransactionService, resolveGetTransactionService, resolveGetTransactionsService, resolvePostTransactionService, resolvePutTransactionService } from "@/store/transactions/transactions.reducer";
+import { resetDetailTransaction, resetStatus, resolveDeleteTransactionService, resolveGetTransactionService, resolveGetTransactionsService, resolvePostTransactionService, resolvePutTransactionService, setSelectedId } from "@/store/transactions/transactions.reducer";
 import { useAppDispatch, useAppSelector } from "./useStore";
 import { mapDetailTransaction, mapTransactions } from "@/mapers/transactions";
 import { TransactionsPayload } from "@/types";
 
 const useTransactions = () => {
   const dispatch = useAppDispatch();
-  const {status, data, detailTransaction} = useAppSelector(state => state.transactions);
+  const {status, data, detailTransaction, selectedId} = useAppSelector(state => state.transactions);
 
   const handelResolveGetTransactionsService = () => {
     dispatch(resolveGetTransactionsService())
@@ -19,7 +19,8 @@ const useTransactions = () => {
     dispatch(resolvePostTransactionService(payload))
   }
 
-  const handelDeleteResolveTransactionService = (id: string) => {
+  const handelDeleteResolveTransactionService = (id: any) => {
+    dispatch(setSelectedId(id))
     dispatch(resolveDeleteTransactionService(id))
   }
 
@@ -49,6 +50,7 @@ const useTransactions = () => {
       status,
       transactions: mapTransactions(data),
       detailTransaction: mapDetailTransaction(detailTransaction),
+      selectedId,
     },
   }
 }

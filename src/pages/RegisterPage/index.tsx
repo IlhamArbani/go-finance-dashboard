@@ -4,8 +4,9 @@ import cx from 'classnames'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { RegisterPayload } from '@/types'
-import useRegister from '@/hooks/useUsers'
 import Alert from '@/components/Alert'
+import useUsers from '@/hooks/useUsers'
+import { useEffect } from 'react'
 
 const RegisterPage = () => {
   const {
@@ -22,11 +23,15 @@ const RegisterPage = () => {
     data: {
       status,
     }
-  } = useRegister();
+  } = useUsers();
 
   const onSubmit = (data: RegisterPayload) => {
     handelResolvePostUserService(data);
   }
+
+  useEffect(() => {
+    return handleResetStatus;
+  }, [])
   return (
     <div className={cx('lg:w-[307px]')}>
       <Alert.Success
@@ -35,7 +40,7 @@ const RegisterPage = () => {
         onClick={handleResetStatus}
       />
 
-      <Alert.Error
+      <Alert.Error 
         isOpen={status.isError}
         message={status.message}
         onClick={handleResetStatus}

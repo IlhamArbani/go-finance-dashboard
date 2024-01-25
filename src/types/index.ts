@@ -1,6 +1,6 @@
 export type Column = {
   accessor: string;
-  header: string;
+  header: any;
   cell: any;
 };
 

@@ -1,5 +1,5 @@
 import { AuthLayout} from "@/layout";
-import { FormTransactionPage, HomePage, LoginPage, RegisterPage } from "@/pages";
+import { FormTransactionPage, HomePage, LoginPage, ProfilePage, RegisterPage } from "@/pages";
 import { createBrowserRouter } from "react-router-dom";
 import ProtectRoute from "./protect.route";
 
@@ -19,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: 'transaction/:id',
         element: <FormTransactionPage/>
+      },
+      {
+        path: 'profile',
+        element: <ProfilePage/>
       }
     ],
   },

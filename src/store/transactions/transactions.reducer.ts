@@ -12,6 +12,7 @@ const initialState = {
   },
   data: [],
   detailTransaction: {},
+  selectedId: null,
 }
 
 export const resolveGetTransactionsService = createAsyncThunk(
@@ -88,7 +89,10 @@ const transactionsSlice = createSlice({
     },
     resetDetailTransaction: (state) => {
       state.detailTransaction = initialState.detailTransaction;
-    } 
+    },
+    setSelectedId: (state, {payload}: any) => {
+      state.selectedId = payload
+    }
   },
   extraReducers(builder) {
     // get list transactions
@@ -178,6 +182,7 @@ const transactionsSlice = createSlice({
 export const {
   resetStatus,
   resetDetailTransaction,
+  setSelectedId,
 } = transactionsSlice.actions;
 
 export default transactionsSlice.reducer; 

@@ -7,7 +7,7 @@ const HomeLayout = ({children}: any) => {
   return (
     <div>
       <Navbar/>
-      <div className={cx('px-28 pt-24')}>
+      <div className={cx('md:px-28 pt-24 px-12')}>
         {children}
       </div>
     </div>
