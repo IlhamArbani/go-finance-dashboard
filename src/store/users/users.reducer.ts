@@ -1,4 +1,4 @@
-import { registerService } from "@/services/regsiter";
+import { postUserService } from "@/services/regsiter";
 import { RegisterPayload } from "@/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
@@ -11,10 +11,10 @@ const initialState = {
   },
 }
 
-export const resolveRegisterService = createAsyncThunk(
-  'resolve/register/service',
+export const resolvePostUserService = createAsyncThunk(
+  'resolve/users/add',
   async (payload: RegisterPayload, {rejectWithValue}) => {
-    const response = await registerService(payload);
+    const response = await postUserService(payload);
 
     if(response.status === 201) {
       return response.data;
@@ -24,8 +24,8 @@ export const resolveRegisterService = createAsyncThunk(
   }
 );
 
-const registerSlice = createSlice({
-  name: 'registerSlice',
+const usersSlice = createSlice({
+  name: 'usersSlice',
   initialState,
   reducers: {
     resetStatus: (state) => {
@@ -33,15 +33,15 @@ const registerSlice = createSlice({
     }
   },
   extraReducers(builder) {
-    builder.addCase(resolveRegisterService.pending, (state) => {
+    builder.addCase(resolvePostUserService.pending, (state) => {
       state.status.isLoading = true;
     })
-    builder.addCase(resolveRegisterService.fulfilled, (state) => {
+    builder.addCase(resolvePostUserService.fulfilled, (state) => {
       state.status.isSuccess = true;
       state.status.isLoading = false;
       state.status.message = 'Register Successful';
     })
-    builder.addCase(resolveRegisterService.rejected, (state) => {
+    builder.addCase(resolvePostUserService.rejected, (state) => {
       state.status.isError = true;
       state.status.isLoading = false;
       state.status.message = 'Register Failed';
@@ -51,6 +51,6 @@ const registerSlice = createSlice({
 
 export const {
   resetStatus,
-} = registerSlice.actions;
+} = usersSlice.actions;
 
-export default registerSlice.reducer;
+export default usersSlice.reducer;

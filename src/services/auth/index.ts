@@ -15,3 +15,13 @@ export const loginService = async (payload: Payload) => {
     return error.response;
   }
 }
+
+export const logoutSErvice = async () => {
+  const path = PATHS.logout;
+
+  try {
+    return await Axios.post(path)
+  } catch (error: any) {
+    return error.response;
+  }
+}

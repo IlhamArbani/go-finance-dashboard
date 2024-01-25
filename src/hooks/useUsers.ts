@@ -1,4 +1,4 @@
-import { resetStatus, resolveRegisterService } from "@/store/register/register.reducer";
+import { resetStatus, resolvePostUserService } from "@/store/users/users.reducer";
 import { useAppDispatch, useAppSelector } from "./useStore"
 import { RegisterPayload } from "@/types";
 
@@ -13,12 +13,12 @@ const useRegister = () => {
     dispatch(resetStatus());
   }
 
-  const handelResolveRegister = (payload: RegisterPayload) => {
-    dispatch(resolveRegisterService(payload));
+  const handelResolvePostUserService = (payload: RegisterPayload) => {
+    dispatch(resolvePostUserService(payload));
   }
   return {
     method: {
-      handelResolveRegister,
+      handelResolvePostUserService,
       handleResetStatus,
     },
     data: {

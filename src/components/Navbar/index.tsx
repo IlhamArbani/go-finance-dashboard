@@ -1,22 +1,63 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import cx from 'classnames'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ICArrowDown, ICNullProfile } from '@/assets/icons'
+import useAuth from '@/hooks/useAuth'
+import Alert from '../Alert'
 
 const Navbar = () => {
-  const [isHideToggle, setHideToggle] = useState(true)
+  const navigate = useNavigate();
+  const [isHideToggle, setHideToggle] = useState(true);
+  const [isHideModal, setHideModal] = useState(true);
+  const {
+    method: {
+      handelResetStatus,
+      handelResolveLogoutService,
+    },
+    data: {
+      status
+    }
+  } = useAuth();
+  useEffect(() => {
+    if(status.isSuccess){
+      navigate('/login')
+    }
+    return handelResetStatus
+  }, [status.isSuccess])
   return (
     <nav id='home' className="bg-primary border-gray-200 relative z-30">
+      <Alert.Error
+        isOpen={status.isError}
+        message={status.message}
+        onClick={handelResetStatus}
+      />
       <div className="flex flex-wrap items-center justify-end p-4 w-screen md:px-20 md:py-0">
         <div className={cx('md:flex text-white gap-x-3 px-12 border-l-2 border-l-[#0000001F] py-4 hidden')}>
           <img src={ICNullProfile} />
-          <div>
+          <div
+            className={cx('cursor-pointer')}
+            onClick={() => setHideModal(!isHideModal)}
+          >
             <div className={cx('flex gap-x-3')}>
               <h1>Ilham Naufal A</h1>
               <img src={ICArrowDown}/>
             </div>
             <p>Software Engineer</p>
           </div>
+          {
+            !isHideModal &&
+            <div className={cx('bg-white absolute p-3 right-28 w-44 rounded-md -bottom-16 border-[1px] hidden z-10 md:block')}>
+              <Link to={'/profile'} className={cx('text-black mb-4 cursor-pointer')}>
+                <p>Profile</p>
+              </Link>
+              <p
+                className={cx('text-black cursor-pointer')}
+                onClick={() => handelResolveLogoutService()}
+              >
+                Logout
+              </p>
+            </div>
+          }
         </div>
         <button onClick={() => setHideToggle(!isHideToggle)}  className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm md:hidden dark:text-gray-400" aria-controls="navbar-default" aria-expanded="false">
             <span className="sr-only">Open main menu</span>

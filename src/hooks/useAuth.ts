@@ -1,6 +1,6 @@
 import { LoginPayload } from "@/types";
 import { useAppDispatch, useAppSelector } from "./useStore"
-import { resetStatus, resolveLoginService } from "@/store/auth/auth.reducer";
+import { resetStatus, resolveLoginService, resolveLogoutService } from "@/store/auth/auth.reducer";
 
 const useAuth = () => {
   const dispatch = useAppDispatch();
@@ -16,10 +16,15 @@ const useAuth = () => {
     dispatch(resetStatus());
   }
 
+  const handelResolveLogoutService = () => {
+    dispatch(resolveLogoutService())
+  }
+
   return {
     method: {
       handelResolveLoginService,
-      handelResetStatus
+      handelResetStatus,
+      handelResolveLogoutService
     },
     data: {
       status,

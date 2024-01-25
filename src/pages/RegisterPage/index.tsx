@@ -4,7 +4,7 @@ import cx from 'classnames'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { RegisterPayload } from '@/types'
-import useRegister from '@/hooks/useRegister'
+import useRegister from '@/hooks/useUsers'
 import Alert from '@/components/Alert'
 
 const RegisterPage = () => {
@@ -16,7 +16,7 @@ const RegisterPage = () => {
 
   const {
     method: {
-      handelResolveRegister,
+      handelResolvePostUserService,
       handleResetStatus,
     },
     data: {
@@ -25,7 +25,7 @@ const RegisterPage = () => {
   } = useRegister();
 
   const onSubmit = (data: RegisterPayload) => {
-    handelResolveRegister(data);
+    handelResolvePostUserService(data);
   }
   return (
     <div className={cx('lg:w-[307px]')}>

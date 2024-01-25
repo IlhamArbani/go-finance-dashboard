@@ -1,6 +1,6 @@
-import { loginService } from "@/services/login";
+import { loginService, logoutSErvice } from "@/services/auth";
 import { LoginPayload } from "@/types";
-import { setAuth } from "@/utils/cookieUtils";
+import { resetCookie, setAuth, setUser } from "@/utils/cookieUtils";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
@@ -25,6 +25,19 @@ export const resolveLoginService = createAsyncThunk(
   }
 );
 
+export const resolveLogoutService = createAsyncThunk(
+  'resolve/logout/service',
+  async (_, {rejectWithValue}) => {
+    const response = await logoutSErvice();
+
+    if(response.status === 200) {
+      return response.data;
+    }
+
+    return rejectWithValue(response.data)
+  }
+);
+
 const authSlice = createSlice({
   name: 'authSlice',
   initialState,
@@ -34,19 +47,34 @@ const authSlice = createSlice({
     }
   },
   extraReducers(builder){
+    // login service
     builder.addCase(resolveLoginService.pending, (state) => {
       state.status.isLoading = true;
     })
     builder.addCase(resolveLoginService.fulfilled, (state, {payload}: any) => {
       state.status.isSuccess = true;
       state.status.isLoading = false;
-      state.status.message = 'Register Successful';
-      setAuth(payload.token)
+      setAuth(payload.token);
+      setUser(payload.id.toString()); 
     })
     builder.addCase(resolveLoginService.rejected, (state) => {
       state.status.isError = true;
       state.status.isLoading = false;
-      state.status.message = 'Register Failed';
+      state.status.message = 'Login Failed';
+    })
+    // logout service
+    builder.addCase(resolveLogoutService.pending, (state) => {
+      state.status.isLoading = true;
+    })
+    builder.addCase(resolveLogoutService.fulfilled, (state) => {
+      state.status.isSuccess = true;
+      state.status.isLoading = false;
+      resetCookie();
+    })
+    builder.addCase(resolveLogoutService.rejected, (state) => {
+      state.status.isError = true;
+      state.status.isLoading = false;
+      state.status.message = 'Logout Failed';
     })
   }
 })

@@ -2,8 +2,8 @@ import { PATHS } from "@/constants";
 import { RegisterPayload } from "@/types";
 import Axios from "..";
 
-export const registerService = async (payload: RegisterPayload) => {
-  const path = PATHS.register;
+export const postUserService = async (payload: RegisterPayload) => {
+  const path = PATHS.users;
 
   try {
     return await Axios.post(path, payload)
