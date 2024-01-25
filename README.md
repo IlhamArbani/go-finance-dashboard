@@ -1,30 +1,62 @@
-# React + TypeScript + Vite
+# Go-Finance Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Prerequisites
 
-Currently, two official plugins are available:
+Before you begin, ensure you have the following installed on your system:
+- Node.js (LTS version)
+- npm or yarn (as your package manager)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation
 
-## Expanding the ESLint configuration
+To set up the project on your local machine, follow these steps:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. **Clone the Repository**
 
-- Configure the top-level `parserOptions` property like this:
+   ```bash
+   git clone https://your-repository-url/go-finance-dashboard.git
+   cd go-finance-dashboard
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+2. **Installation Dependencies**
+
+Using npm:
+
+```
+npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Or using yarn:
+
+```
+yarn install
+```
+
+## Running the Application
+
+### Development Mode
+
+To run the application in development mode with hot-reload features, execute:
+
+```
+npm run dev
+```
+
+Or using yarn:
+
+```
+yarn dev
+```
+
+The development server will start, and you can view the application in your browser at http://localhost:5173
+
+### Production Mode
+you can see the production build at:
+https://65b22ec9551fb44f9115093b--stirring-marigold-e8469e.netlify.app/
+
+## Usage
+
+To access the dashboard:
+
+1. **Navigate to the login page.**
+2. **Use the following credentials for login:**
+  - **Email: eve.holt@reqres.in**
+  - **Password: pistol**
