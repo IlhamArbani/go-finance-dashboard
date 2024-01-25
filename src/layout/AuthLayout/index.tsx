@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button } from '@/components'
 import cx from 'classnames'
 import { TextureIMG } from '@/assets/image'

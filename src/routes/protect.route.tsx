@@ -1,6 +1,6 @@
 import { HomeLayout } from '@/layout'
 import { getAuth } from '@/utils/cookieUtils'
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 
 const ProtectRoute = () => {

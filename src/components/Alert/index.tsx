@@ -1,4 +1,3 @@
-import React from 'react'
 import cx from 'classnames';
 import { ModalLayout } from '@/layout'
 import { ErrorIMG, SuccessIMG } from '@/assets/image';

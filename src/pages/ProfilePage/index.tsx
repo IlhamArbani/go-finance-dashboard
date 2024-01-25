@@ -1,4 +1,3 @@
-import React from 'react'
 import cx from 'classnames';
 import useUsers from '@/hooks/useUsers';
 import { ICNullProfile } from '@/assets/icons';

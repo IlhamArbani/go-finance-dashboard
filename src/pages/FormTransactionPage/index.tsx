@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import cx from 'classnames';
 import { Button, Input } from '@/components';
 import { useForm } from 'react-hook-form';

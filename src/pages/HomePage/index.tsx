@@ -1,5 +1,5 @@
 import { Button, IndeterminateCheckbox, Table } from '@/components'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import cx from 'classnames'
 import useTransactions from '@/hooks/useTransactions';
 import { ICDelete, ICEdit } from '@/assets/icons';
