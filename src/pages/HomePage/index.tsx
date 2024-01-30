@@ -5,21 +5,23 @@ import useTransactions from '@/hooks/useTransactions';
 import { ICDelete, ICEdit } from '@/assets/icons';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@/components/Alert';
+import { useDeleteTransactionsMutation, useGetTransactionsQuery } from '@/store/transactionsApi';
+import { mapTransactions } from '@/mapers/transactions';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const {
     method: {
-      handelResolveGetTransactionsService,
       handelResetStatus,
-      handelDeleteResolveTransactionService,
     },
     data: {
-      transactions,
       status,
       selectedId
     }
   } = useTransactions();
+
+  const {data} = useGetTransactionsQuery();
+  const [deleteTransaction, {isLoading, isSuccess, isError, reset}] = useDeleteTransactionsMutation();
   
 
   const columns = [
@@ -78,8 +80,8 @@ const HomePage = () => {
               <img src={ICEdit}/>
             </div>
             <img
-              onClick={() => handelDeleteResolveTransactionService(item.row.original.id)}
-              className={cx('cursor-pointer', {'animate-bounce': status.isLoading && status.service === 'delete' && item.row.original.id === selectedId})}
+              onClick={() => deleteTransaction(item.row.original.id)}
+              className={cx('cursor-pointer', {'animate-bounce': isLoading && item.row.original.id === selectedId})}
               src={ICDelete}
             />
           </div>
@@ -90,20 +92,20 @@ const HomePage = () => {
   ];
 
   useEffect(() => {
-    handelResolveGetTransactionsService();
+    // handelResolveGetTransactionsService();
     return handelResetStatus
   }, [])
   return (
     <>
       <Alert.Error
-        isOpen={(status.isError && status.service === 'delete')}
+        isOpen={isError}
         message={status.message}
-        onClick={handelResetStatus}
+        onClick={reset}
       />
       <Alert.Success
-        isOpen={(status.isSuccess && status.service === 'delete')}
+        isOpen={isSuccess}
         message={status.message}
-        onClick={handelResetStatus}
+        onClick={reset}
       />
       <div className='flex justify-end mb-10'>
         <Button
@@ -114,7 +116,7 @@ const HomePage = () => {
       </div>
       <Table
         columns={columns}
-        data={transactions}
+        data={mapTransactions(data?.data)}
       />
     </>
   )
