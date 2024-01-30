@@ -1,7 +1,7 @@
 import { generateDate } from "@/utils/dateUtils";
 
-export const mapTransactions = (data: any[]) => {
-  const result = data.map((item) => (
+export const mapTransactions = (data: any[] | undefined) => {
+  const result = data ? data.map((item) => (
     {
       id: item.id,
       item: item.name,
@@ -9,7 +9,7 @@ export const mapTransactions = (data: any[]) => {
       date: item.year,
       status: item.color,
     }
-  ))
+  )) : []
 
   return result;
 }
