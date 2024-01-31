@@ -4,6 +4,7 @@ import transactionsReducer from "./transactions/transactions.reducer";
 import usersReducer from "./users/users.reducer";
 import { transactionsApi } from "./transactionsApi";
 import { usersApi } from "./usersApi";
+import { authApi } from "./authApi";
 
 export const store = configureStore({
   reducer: {
@@ -12,11 +13,13 @@ export const store = configureStore({
     transactions: transactionsReducer,
     [transactionsApi.reducerPath]: transactionsApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat([
       transactionsApi.middleware,
-      usersApi.middleware
+      usersApi.middleware,
+      authApi.middleware,
     ])
   }
 })
