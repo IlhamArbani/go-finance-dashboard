@@ -3,7 +3,7 @@ import { Transactions } from "@/types";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const transactionsApi = createApi({
-  reducerPath: 'api',
+  reducerPath: 'transactionsApi',
   baseQuery: services(),
   endpoints(builder) {
     return {
@@ -11,7 +11,7 @@ export const transactionsApi = createApi({
         query: () => ({url: '/transactions', method: 'get'})
       }),
       deleteTransactions: builder.mutation<void, number>({
-        query: (id) => ({url: '/transactions/'+id, method: 'delete'})
+        query: (id) => ({url: '/transactions/'+id, method: 'delete'}) 
       })
     }
   },

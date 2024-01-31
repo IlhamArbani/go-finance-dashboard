@@ -4,8 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ICArrowDown, ICNullProfile } from '@/assets/icons'
 import useAuth from '@/hooks/useAuth'
 import Alert from '../Alert'
-import useUsers from '@/hooks/useUsers'
 import { getUser } from '@/utils/cookieUtils'
+import { useGetUserQuery } from '@/store/usersApi'
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -20,23 +20,16 @@ const Navbar = () => {
       status
     }
   } = useAuth();
-  const {
-    method: {
-      handelResolveGetUserService,
-    },
-    data: {
-      user,
-    }
-  } = useUsers();
+
+  const {data} = useGetUserQuery(getUser());
+
   useEffect(() => {
     if(status.isSuccess){
       navigate('/login')
     }
     return handelResetStatus
   }, [status.isSuccess])
-  useEffect(() => {
-    handelResolveGetUserService(getUser())
-  }, [])
+
   return (
     <nav id='home' className="bg-primary border-gray-200 relative z-30">
       <Alert.Error
@@ -47,10 +40,10 @@ const Navbar = () => {
       <div className="flex flex-wrap items-center justify-end p-4 w-screen md:px-20 md:py-0">
         <div className={cx('md:flex text-white gap-x-3 px-12 border-l-2 border-l-[#0000001F] py-4 hidden')}>
           {
-            user.avatar ?
+            data?.data.avatar ?
             <img
               className={cx('w-12 h-12 rounded-full')}
-              src={user.avatar} 
+              src={data?.data.avatar} 
             />:
             <img
               className={cx('w-12 h-12 rounded-full')}
@@ -62,7 +55,7 @@ const Navbar = () => {
             onClick={() => setHideModal(!isHideModal)}
           >
             <div className={cx('flex gap-x-3')}>
-              <h1>{user.name}</h1>
+              <h1>{`${data?.data.first_name} ${data?.data.last_name}`}</h1>
               <img src={ICArrowDown}/>
             </div>
             <p>Software Engineer</p>

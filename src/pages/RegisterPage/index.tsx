@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { RegisterPayload } from '@/types'
 import Alert from '@/components/Alert'
 import useUsers from '@/hooks/useUsers'
-import { useEffect } from 'react'
+import { usePostUserMutation } from '@/store/usersApi'
 
 const RegisterPage = () => {
   const {
@@ -16,34 +16,29 @@ const RegisterPage = () => {
   } = useForm<RegisterPayload>();
 
   const {
-    method: {
-      handelResolvePostUserService,
-      handleResetStatus,
-    },
     data: {
       status,
     }
   } = useUsers();
 
+  const [postMutation, {isLoading, isSuccess, isError, reset}] = usePostUserMutation();
+
   const onSubmit = (data: RegisterPayload) => {
-    handelResolvePostUserService(data);
+    postMutation(data);
   }
 
-  useEffect(() => {
-    return handleResetStatus;
-  }, [])
   return (
     <div className={cx('lg:w-[307px]')}>
       <Alert.Success
-        isOpen={status.isSuccess}
+        isOpen={isSuccess}
         message={status.message}
-        onClick={handleResetStatus}
+        onClick={reset}
       />
 
       <Alert.Error 
-        isOpen={status.isError}
+        isOpen={isError}
         message={status.message}
-        onClick={handleResetStatus}
+        onClick={reset}
       />
 
       <h1 className={cx('font-bold text-center text-xl mb-10 lg:hidden')}>Go Finance</h1>
@@ -80,7 +75,7 @@ const RegisterPage = () => {
         <Button
           text='Regsiter'
           onClick={handleSubmit(onSubmit)}
-          isLoading={status.isLoading}
+          isLoading={isLoading}
         />
         <div className={cx('flex justify-center items-center text-xs text-gray-400 mt-4 gap-x-1')}>
           <p>Have an account?</p>
