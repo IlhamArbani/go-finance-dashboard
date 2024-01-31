@@ -49,3 +49,8 @@ export type User = {
     text: string;
   }
 }
+
+export type LoginResponse = {
+  id: number;
+  token: string;
+}

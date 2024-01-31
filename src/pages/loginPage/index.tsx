@@ -7,6 +7,8 @@ import { LoginPayload } from '@/types'
 import useAuth from '@/hooks/useAuth'
 import Alert from '@/components/Alert'
 import { useEffect } from 'react'
+import { useLoginMutation } from '@/store/authApi'
+import { setAuth, setUser } from '@/utils/cookieUtils'
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -17,31 +19,30 @@ const LoginPage = () => {
   } = useForm<LoginPayload>();
 
   const {
-    method: {
-      handelResolveLoginService,
-      handelResetStatus
-    },
     data: {
       status,
     }
   } = useAuth();
 
+  const [login, {data, isSuccess, isError, isLoading, reset}] = useLoginMutation()
+
   const onSubmit = (data: LoginPayload) => {
-    handelResolveLoginService(data);
+    login(data);
   }
 
   useEffect(() => {
-    if(status.isSuccess) {
+    if(isSuccess) {
+      setAuth(data!.token);
+      setUser(data!.id.toString())
       navigate('/')
     }
-    return handelResetStatus
-  }, [status.isSuccess])
+  }, [isSuccess])
   return (
     <div className={cx('lg:w-[307px]')}>
       <Alert.Error
-        isOpen={status.isError}
+        isOpen={isError}
         message={status.message}
-        onClick={handelResetStatus}
+        onClick={reset}
       />
       <h1 className={cx('font-bold text-center text-xl mb-10 lg:hidden')}>Go Finance</h1>
       <div className={cx('mb-10')}>
@@ -69,7 +70,7 @@ const LoginPage = () => {
         <Button
           text='Login'
           onClick={handleSubmit(onSubmit)}
-          isLoading={status.isLoading}
+          isLoading={isLoading}
         />
         <p className={cx('text-right text-xs text-gray-400')}>Forgot Password?</p>
         <div className={cx('flex justify-center items-center text-xs text-gray-400 mt-4 gap-x-1')}>

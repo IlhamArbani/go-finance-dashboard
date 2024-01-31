@@ -4,38 +4,36 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ICArrowDown, ICNullProfile } from '@/assets/icons'
 import useAuth from '@/hooks/useAuth'
 import Alert from '../Alert'
-import { getUser } from '@/utils/cookieUtils'
+import { getUser, resetCookie } from '@/utils/cookieUtils'
 import { useGetUserQuery } from '@/store/usersApi'
+import { useLogoutMutation } from '@/store/authApi'
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isHideToggle, setHideToggle] = useState(true);
   const [isHideModal, setHideModal] = useState(true);
   const {
-    method: {
-      handelResetStatus,
-      handelResolveLogoutService,
-    },
     data: {
       status
     }
   } = useAuth();
 
   const {data} = useGetUserQuery(getUser());
+  const [logout, {isSuccess, isError, reset, isLoading}] = useLogoutMutation();
 
   useEffect(() => {
-    if(status.isSuccess){
-      navigate('/login')
+    if(isSuccess){
+      resetCookie();
+      navigate('/login');
     }
-    return handelResetStatus
-  }, [status.isSuccess])
+  }, [isSuccess])
 
   return (
     <nav id='home' className="bg-primary border-gray-200 relative z-30">
       <Alert.Error
-        isOpen={status.isError}
+        isOpen={isError}
         message={status.message}
-        onClick={handelResetStatus}
+        onClick={reset}
       />
       <div className="flex flex-wrap items-center justify-end p-4 w-screen md:px-20 md:py-0">
         <div className={cx('md:flex text-white gap-x-3 px-12 border-l-2 border-l-[#0000001F] py-4 hidden')}>
@@ -67,8 +65,8 @@ const Navbar = () => {
                 <p>Profile</p>
               </Link>
               <p
-                className={cx('text-black cursor-pointer', {'animate-pulse': status.isLoading})}
-                onClick={() => handelResolveLogoutService()}
+                className={cx('text-black cursor-pointer', {'animate-pulse': isLoading})}
+                onClick={() => logout()}
               >
                 Logout
               </p>
@@ -87,7 +85,7 @@ const Navbar = () => {
               <Link to={'/profile'} className="block py-2 px-3 text-white">Profile</Link>
             </li>
             <li>
-              <p onClick={() => handelResolveLogoutService()} className={cx("block py-2 px-3 text-white", {'animate-pulse': status.isLoading})}>Log Out</p>
+              <p onClick={() => logout()} className={cx("block py-2 px-3 text-white", {'animate-pulse': isLoading})}>Log Out</p>
             </li>
           </ul>
         </div>
