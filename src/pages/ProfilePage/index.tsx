@@ -1,28 +1,26 @@
 import cx from 'classnames';
-import useUsers from '@/hooks/useUsers';
 import { ICNullProfile } from '@/assets/icons';
+import { useGetUserQuery } from '@/store/usersApi';
+import { getUser } from '@/utils/cookieUtils';
 
 const ProfilePage = () => {
-  const {
-    data: {
-      user
-    }
-  } = useUsers();
+
+  const {currentData} = useGetUserQuery(getUser())
   return (
     <div className={cx('w-full bg-white rounded-md flex flex-col gap-y-4 shadow-md p-4 items-center')}>
       {
-        user.avatar ?
+        currentData?.data.avatar ?
         <img
           className={cx('w-24 h-24 rounded-full')}
-          src={user.avatar} 
+          src={currentData?.data.avatar} 
         />:
         <img
           className={cx('w-24 h-24 rounded-full')}
           src={ICNullProfile} 
         />
       }
-      <h1 className={cx('text-2xl')}>{user.name}</h1>
-      <h2 className={cx('text-xl')}>{user.email}</h2>
+      <h1 className={cx('text-2xl')}>{`${currentData?.data.first_name} ${currentData?.data.last_name}`}</h1>
+      <h2 className={cx('text-xl')}>{currentData?.data.email}</h2>
     </div>
   )
 }
