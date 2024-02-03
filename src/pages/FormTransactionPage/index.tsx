@@ -3,9 +3,10 @@ import cx from 'classnames';
 import { Button, Input } from '@/components';
 import { useForm } from 'react-hook-form';
 import { TransactionsPayload } from '@/types';
-import useTransactions from '@/hooks/useTransactions';
 import Alert from '@/components/Alert';
 import { useParams } from 'react-router-dom';
+import { useGetTransactionQuery, usePostTransactionMutation, usePutTransactionMutation } from '@/store/transactionsApi';
+import { mapDetailTransaction } from '@/mapers/transactions';
 
 const FormTransactionPage = () => {
   const {id} = useParams();
@@ -15,55 +16,57 @@ const FormTransactionPage = () => {
     handleSubmit,
     formState: {errors},
   } = useForm<TransactionsPayload>();
-  const {
-    method: {
-      handelResolvePostTransactionService,
-      handelResetStatus,
-      handleResolveGetTransactionService,
-      handelResolvePutTransactionService,
-      handelResetDetailTransaction,
-    },
-    data: {
-      status,
-      detailTransaction,
+
+  const [
+    postTransaction,
+    {
+    isError: isErrorCreate,
+    isSuccess: isSuccessCreate,
+    isLoading: isLoadingCreate,
+    reset: resetCreate
+  }] = usePostTransactionMutation();
+
+  const [
+    putTransaction,
+    {
+      isSuccess: isSuccessEdit,
+      isError: isErrorEdit,
+      isLoading: isLoadingEdit,
+      reset: resetEdit
     }
-  } = useTransactions();
+  ] = usePutTransactionMutation();
+
+  const {data} = useGetTransactionQuery(id, {skip: id ? false : true});
 
   const onSubmit = (data: TransactionsPayload) => {
     if(id) {
-      handelResolvePutTransactionService(data, id)
+      putTransaction({payload: data, id})
     } else {
-      handelResolvePostTransactionService(data)
+      postTransaction(data)
     }
   }
 
-  useEffect(() => {
-    if(id){
-      handleResolveGetTransactionService(id)
-    }
-    return handelResetDetailTransaction
-  }, [])
-
-  useEffect(() => {
-    if(detailTransaction.name){
+  useEffect(() => {    
+    const detailTransaction = data ? mapDetailTransaction(data.data) : null;
+    if(detailTransaction){
       setValue('name', detailTransaction.name);
       setValue('price', detailTransaction.price);
       setValue('date', detailTransaction.date);
       setValue('status', detailTransaction.status)
     }
-  }, [detailTransaction])
+  }, [data])
 
   return (
     <>
       <Alert.Success
-        isOpen={status.isSuccess && (status.service === 'post' || status.service === 'put')}
-        message={status.message}
-        onClick={handelResetStatus}
+        isOpen={id ? isSuccessEdit : isSuccessCreate}
+        message={''}
+        onClick={id ? resetEdit : resetCreate}
       />
       <Alert.Error
-        isOpen={status.isError && (status.service === 'post' || status.service === 'put')}
-        message={status.message}
-        onClick={handelResetStatus}
+        isOpen={id ? isErrorEdit : isErrorCreate}
+        message={''}
+        onClick={id ? resetEdit : resetCreate}
       />
       <div className={cx('w-full bg-white rounded-md flex flex-col gap-y-4 shadow-md p-4')}>
         <h1 className={cx('font-bold text-xl')}>{`${id ? 'Edit' : 'Add'} Transaction`}</h1>
@@ -102,7 +105,7 @@ const FormTransactionPage = () => {
             text={`${id ? 'Update' : 'Save'} Transaction`}
             onClick={handleSubmit(onSubmit)}
             size='sm'
-            isLoading={status.isLoading && (status.service === 'post' || status.service === 'put')}
+            isLoading={id ? isLoadingEdit : isLoadingCreate}
           />
         </div>
       </div>

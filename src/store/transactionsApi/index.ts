@@ -1,5 +1,5 @@
 import services from "@/services/services";
-import { Transactions, TransactionsPayload } from "@/types";
+import { Transaction, Transactions, TransactionsPayload } from "@/types";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const transactionsApi = createApi({
@@ -18,6 +18,9 @@ export const transactionsApi = createApi({
       }),
       putTransaction: builder.mutation<void, {id: string | number, payload: TransactionsPayload}>({
         query: ({id, payload: data}) => ({url:`/transactions/${id}`, data, method: 'put'}) 
+      }),
+      getTransaction: builder.query<Transaction, string | number | undefined>({
+        query: (id) => ({url:`/transaction/${id}`, method: 'get'})
       })
     }
   },
@@ -28,4 +31,5 @@ export const {
   useDeleteTransactionsMutation,
   usePostTransactionMutation,
   usePutTransactionMutation,
+  useGetTransactionQuery
 } = transactionsApi;

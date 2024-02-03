@@ -18,6 +18,20 @@ export type TransactionsPayload = {
   status: string,
 }
 
+export type Transaction = {
+  data: {
+    id: number;
+    name: string;
+    year: number;
+    color: string;
+    pantone_value: string;
+  }
+  support: {
+    url: string;
+    text: string;
+  }
+}
+
 export type Transactions = {
   page: number;
   per_page: number;
